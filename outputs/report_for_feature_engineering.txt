@@ -1,0 +1,50 @@
+Drop Column Alley 1369 missing values, missing values ernomous in comparison to dataset
+
+Do same to: 
+
+MasVnrType - 872 missing values
+
+FireplaceQu - 690 values
+
+PoolQC — 1453 missing values
+
+Fence — 1179 missing values
+
+MiscFeature — 1406 missing values
+
+1. Strongly Correlated Features (|r| ≥ 0.7)
+Feature 1	Feature 2	Correlation (r)	Insight
+GarageCars	GarageArea	0.88
+TotalBsmtSF	1stFlrSF	0.82
+GrLivArea	TotRmsAbvGrd 0.83
+YearBuilt	GarageYrBlt	0.83
+OverallQual	SalePrice	0.79
+
+2. Moderate Correlations (0.5 ≤ |r| < 0.7)
+Feature 1	Feature 2	Correlation (r)	Insight
+FullBath	OverallQual	0.55
+YearRemodAdd	YearBuilt	0.59
+
+
+Actionable Steps to Reduce Multicollinearity
+Drop one of each highly correlated pair:
+
+Remove GarageArea (keep GarageCars).
+
+Remove 1stFlrSF (keep TotalBsmtSF).
+
+Remove TotRmsAbvGrd (keep GrLivArea).
+
+Remove GarageYrBlt (keep YearBuilt).
+
+Keep moderately correlated features if they add unique insights (e.g., FullBath vs. OverallQual).
+
+Verify with VIF (Variance Inflation Factor) if building linear models:\
+
+Multicollinearity inflates model variance and misleads interpretation.
+
+Solution: Simplify by keeping one feature from each correlated pair.
+
+Final Feature Recommendations for Modeling:
+✅ Keep: OverallQual, GrLivArea, GarageCars, TotalBsmtSF, FullBath, YearBuilt
+❌ Drop: GarageArea, 1stFlrSF, TotRmsAbvGrd, GarageYrBlt

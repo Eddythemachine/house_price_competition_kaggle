@@ -1,0 +1,18 @@
+The dataset has 1460 rows and 81 column
+The dataset posses 3 unique datatypes, int,float and object
+No Duplicates Values
+
+🔎 1. General Overview
+Total Columns: 81
+
+Total Rows: 1460
+
+
+Data Types:
+
+int64: 35 columns (e.g. Id, LotArea, OverallQual)
+
+float64: 3 columns (e.g. LotFrontage, MasVnrArea, GarageYrBlt)
+
+object (categorical): 43 columns (e.g. MSZoning, Street, SaleType)
+
