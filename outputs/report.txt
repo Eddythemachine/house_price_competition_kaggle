@@ -4,6 +4,7 @@ No Duplicates Values
 
 🔎 1. General Overview
 Total Columns: 81
+35 - Numerical variables, plus MSSubClass
 
 Total Rows: 1460
 
