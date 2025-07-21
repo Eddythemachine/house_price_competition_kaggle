@@ -1,0 +1,2 @@
+!pip install dash==2.0.0
+!pip install dash-bootstrap-components
