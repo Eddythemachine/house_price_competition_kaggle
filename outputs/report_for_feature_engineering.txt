@@ -59,19 +59,40 @@ These should likely be treated as a distinct category
 (e.g., "No Alley", "No Basement") rather than standard imputation.
 
 🧠 Final Feature Engineering Recommendation(Numerical Valuse)
-Given the presence of numerous outliers in critical numerical features such as LotArea, GrLivArea, and SalePrice, dropping these values would lead to significant data loss and potentially distort the underlying distribution of the dataset. Therefore, instead of eliminating outliers, we propose a robust transformation strategy that maintains data integrity while minimizing the negative impact of extreme values.
+Given the presence of numerous outliers in critical numerical features such as LotArea, 
+GrLivArea, and SalePrice, dropping these values would lead to significant data loss and 
+potentially distort the underlying distribution of the dataset. Therefore, instead of 
+eliminating outliers, we propose a robust transformation strategy that maintains data 
+integrity while minimizing the negative impact of extreme values.
 
 Use of RobustScaler for Numerical Features
-We recommend applying RobustScaler to all numerical columns during preprocessing. Unlike StandardScaler, which uses mean and standard deviation, RobustScaler scales data based on the median and interquartile range (IQR), making it highly resistant to outliers. This ensures that the overall scale of the features is normalized without allowing extreme values to skew the distribution.
+We recommend applying RobustScaler to all numerical columns during preprocessing. 
+Unlike StandardScaler, which uses mean and standard deviation, RobustScaler scales 
+data based on the median and interquartile range (IQR), making it highly resistant to outliers. 
+This ensures that the overall scale of the features is normalized without allowing extreme values 
+to skew the distribution.
 
 Logarithmic Transformation for Highly Skewed Variables
-For variables with heavy right-skew, such as SalePrice, LotArea, and GrLivArea, we propose using a log transformation (e.g., np.log1p) to compress the range of large values. This technique reduces skewness, improves model performance, and helps treat extreme values without removing them.
+For variables with heavy right-skew, such as SalePrice, LotArea, and GrLivArea, 
+we propose using a log transformation (e.g., np.log1p) to compress the range of large values. 
+This technique reduces skewness, improves model performance, and helps treat extreme values 
+without removing them.
 
 Preservation of Data through Winsorization (Optional)
-In cases where numeric values are severely anomalous but still potentially informative, Winsorization may be applied. This technique caps values at specified percentiles (e.g., 1st and 99th), retaining the row while limiting the influence of outliers.
+In cases where numeric values are severely anomalous but still potentially informative, 
+Winsorization may be applied. This technique caps values at specified percentiles 
+(e.g., 1st and 99th), retaining the row while limiting the influence of outliers.
 
 Categorical Encoding with One-Hot Encoding
-One-hot encoding will be applied to all nominal categorical variables. While this method does not address outliers directly, it ensures categorical features are properly formatted for machine learning algorithms.
+One-hot encoding will be applied to all nominal categorical variables. 
+While this method does not address outliers directly, it ensures categorical features 
+are properly formatted for machine learning algorithms.
 
 Avoid Dropping Outliers to Maintain Dataset Size
-Because of the distribution density and potential importance of rare values, dropping rows with outliers is not recommended. Our focus remains on retaining as much information as possible while dampening the influence of anomalies through scaling and transformation.
+Because of the distribution density and potential importance of rare values, 
+dropping rows with outliers is not recommended. Our focus remains on retaining as much 
+information as possible while dampening the influence of anomalies through scaling and transformation.
+
+Most correlated numerical features list:
+['LotFrontage', 'OverallQual', 'YearBuilt', 'YearRemodAdd', 'MasVnrArea', 'BsmtFinSF1', 'TotalBsmtSF', '1stFlrSF', '2ndFlrSF', 'GrLivArea', 'FullBath', 'TotRmsAbvGrd', 'Fireplaces', 'GarageYrBlt', 'GarageCars', 'GarageArea', 
+'WoodDeckSF', 'OpenPorchSF']

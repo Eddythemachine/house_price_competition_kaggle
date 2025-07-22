@@ -17,3 +17,14 @@ float64: 3 columns (e.g. LotFrontage, MasVnrArea, GarageYrBlt)
 
 object (categorical): 43 columns (e.g. MSZoning, Street, SaleType)
 
+## Insights From Numerical vs Target Variable(Price)
+
+Homes with better quality, more space, and more features 
+(like finished basements, multiple bathrooms, modern garages, and outdoor amenities) 
+are consistently found at higher sale prices.
+
+There's a clear progression from basic to feature-rich homes as sale price increases.
+
+Particularly between 155000 and 190000, there's a sharp increase in luxury 
+touches — like larger masonry veneer, bigger decks, and more garage space — showing 
+that premium buyers value comfort and finish just as much as size.

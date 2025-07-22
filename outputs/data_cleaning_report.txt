@@ -1,0 +1,46 @@
+# Data Cleaning
+
+🧾 Missing Values Report
+🔹 Missing Values Before Cleaning
+
+Train Set: 19 columns contained missing values
+
+Test Set: 33 columns contained missing values
+
+
+# Train Set
+
+## 🔢 Treatment of Missing Numerical Values
+LotFrontage: Missing values were filled using the mean of the column.
+
+Alley: Dropped due to too many missing values (majority of entries were NaN).
+
+MasVnrType: Initially dropped due to nearly 50% missing values. 
+May revisit later for imputation using KNN or advanced modeling.
+
+MasVnrArea: Missing values were replaced with the mean.
+
+BsmtQual: Filled missing entries with the mode (most frequent category).
+
+BsmtCond: Filled missing entries with the mode.
+
+BsmtExposure: Filled missing entries with the mode.
+
+### 🏷️ Categorical Values Handling
+Electrical: Missing values were filled with the string "NA" to 
+explicitly capture non-recorded cases. This allows the model to consider "NA" as a 
+distinct category instead of inferring a relationship that may not exist.
+
+GarageType, GarageFinish, GarageQual, and GarageCond were also filled with "NA" to 
+account for homes with no garage, rather than imputing misleading values.
+
+## 🛠️ Other Considerations
+GarageYrBlt: A numerical year field. Missing values were filled with the median to avoid 
+skewing by outliers or extreme values.
+
+PoolQC, Fence, and MiscFeature columns were dropped due to excessive missing values and 
+lack of predictive power.
+
+Categorical string imputation was preferred in many cases using "NA" or mode to help 
+the model capture the absence of a feature (e.g., no basement, no garage) rather than assuming a best guess.
+
