@@ -1,2 +1,9 @@
-!pip install dash==2.0.0
-!pip install dash-bootstrap-components
+pandas==1.5.3
+numpy==1.24.4
+matplotlib==3.7.1
+seaborn==0.12.2
+scikit-learn==1.3.0
+xgboost==1.7.6
+plotly==5.18.0
+dash==2.0.0
+dash-bootstrap-components==1.0.0

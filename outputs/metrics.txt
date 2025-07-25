@@ -1,0 +1,78 @@
+# 🧠 House Price Prediction – Model Performance Report
+
+## 📋 Objective
+To predict house sale prices using supervised learning models. Multiple regression-based models were trained and evaluated on key performance metrics.
+
+---
+
+## 🧪 Models Evaluated
+
+### 1. 🌲 Decision Tree Regressor
+- **Best Parameters**:
+  - `max_depth`: 5
+  - `min_samples_split`: 2
+  - `min_samples_leaf`: 2
+- **Performance Metrics**:
+  - **RMSE**: 40,780.62
+  - **R² Score**: 0.7427
+  - **MAE**: 26,939.73
+
+**Summary**: The Decision Tree performed modestly but struggled to generalize complex relationships, resulting in higher error and lower explanatory power.
+
+---
+
+### 2. 🚀 XGBoost Regressor (Base Model)
+- **Best Parameters**:
+  - `n_estimators`: 200
+  - `max_depth`: 3
+  - `learning_rate`: 0.1
+  - `subsample`: 0.8
+- **Performance Metrics**:
+  - **RMSE**: 25,422.12
+  - **R² Score**: 0.9000
+  - **MAE**: 16,081.61
+
+**Summary**: The base XGBoost model performed strongly, capturing both linear and non-linear patterns effectively. It significantly reduced error compared to the Decision Tree model.
+
+---
+
+### 3. 🛡️ XGBoost Regressor with Regularization
+- **Best Parameters**:
+  - `n_estimators`: 100
+  - `max_depth`: 5
+  - `learning_rate`: 0.1
+  - `subsample`: 0.8
+  - `reg_alpha`: 0 (L1 regularization)
+  - `reg_lambda`: 5.0 (L2 regularization)
+- **Performance Metrics**:
+  - **RMSE**: 29,966.73
+  - **R² Score**: 0.8611
+  - **MAE**: 17,574.41
+
+**Summary**: Introducing regularization into XGBoost helped to reduce overfitting slightly, although it resulted in slightly higher RMSE and lower R² than the base model. Still a solid performer.
+
+---
+
+## 🏁 Conclusion
+
+| Model                     | RMSE       | R² Score | MAE       |
+|--------------------------|------------|----------|-----------|
+| Decision Tree            | 40,780.62  | 0.7427   | 26,939.73 |
+| XGBoost (Base)           | 25,422.12  | 0.9000   | 16,081.61 |
+| XGBoost (Regularized)    | 29,966.73  | 0.8611   | 17,574.41 |
+
+- ✅ **Best Performer**: **XGBoost Base**, with the lowest RMSE and highest R².
+- 🧪 **Most Regularized/Stable**: **XGBoost + Regularization**, which may generalize better to unseen data despite a slight drop in metrics.
+- 🌳 **Baseline/Reference**: **Decision Tree**, useful for interpretability but less performant.
+
+---
+
+## 📂 Deliverables
+- Submission files generated for each model:
+  - `decision_tree_submission.csv`
+  - `xgboost_submission.csv`
+  - `xgboost_regularized_submission.csv`
+- All trained models saved as `.pkl` files for future inference or deployment.
+
+---
+

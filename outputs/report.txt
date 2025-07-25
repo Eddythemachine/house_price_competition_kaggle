@@ -1,30 +1,40 @@
-The dataset has 1460 rows and 81 column
-The dataset posses 3 unique datatypes, int,float and object
-No Duplicates Values
+# 📊 Dataset Summary Report
 
-🔎 1. General Overview
-Total Columns: 81
-35 - Numerical variables, plus MSSubClass
+---
 
-Total Rows: 1460
+## 🔎 1. General Overview
 
+- **Total Rows**: 1,460  
+- **Total Columns**: 81  
+- **No Duplicate Values Found**
 
-Data Types:
+### 🧬 Data Types Breakdown
 
-int64: 35 columns (e.g. Id, LotArea, OverallQual)
+| Data Type  | Count | Examples                                   |
+|------------|--------|--------------------------------------------|
+| `int64`     | 35     | `Id`, `LotArea`, `OverallQual`, etc.       |
+| `float64`   | 3      | `LotFrontage`, `MasVnrArea`, `GarageYrBlt` |
+| `object`    | 43     | `MSZoning`, `Street`, `SaleType`, etc.     |
 
-float64: 3 columns (e.g. LotFrontage, MasVnrArea, GarageYrBlt)
+- **Total Numerical Features**: 35 (`int64`) + 1 (`MSSubClass` treated as numerical)  
+- **Total Categorical Features**: 43 (`object`)
 
-object (categorical): 43 columns (e.g. MSZoning, Street, SaleType)
+---
 
-## Insights From Numerical vs Target Variable(Price)
+## 💡 2. Key Insights: Numerical Features vs. Sale Price
 
-Homes with better quality, more space, and more features 
-(like finished basements, multiple bathrooms, modern garages, and outdoor amenities) 
-are consistently found at higher sale prices.
+- Homes with **higher quality scores**, **larger living areas**, and **added features** 
+(e.g., finished basements, modern garages, multiple bathrooms) tend to have **higher sale prices**.
+  
+- There's a clear **positive progression** from **basic** to **premium** homes as `SalePrice` 
+increases.
 
-There's a clear progression from basic to feature-rich homes as sale price increases.
+- Between **$155,000 and $190,000**, there's a notable **jump in luxury amenities** such as:
+  - Larger **masonry veneers**
+  - Bigger **wooden decks**
+  - Expanded **garage capacity**
 
-Particularly between 155000 and 190000, there's a sharp increase in luxury 
-touches — like larger masonry veneer, bigger decks, and more garage space — showing 
-that premium buyers value comfort and finish just as much as size.
+🔎 This suggests that **premium buyers value comfort and finish** (not just size) as home prices 
+rise.
+
+---

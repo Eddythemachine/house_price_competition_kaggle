@@ -1,46 +1,61 @@
-# Data Cleaning
+# 🧹 Data Cleaning Report
 
-🧾 Missing Values Report
-🔹 Missing Values Before Cleaning
+---
 
-Train Set: 19 columns contained missing values
+## 🧾 Missing Values Summary
 
-Test Set: 33 columns contained missing values
+### 🔹 Missing Values *Before* Cleaning:
 
+- **Train Set**: 19 columns contained missing values  
+- **Test Set**: 33 columns contained missing values
 
-# Train Set
+---
 
-## 🔢 Treatment of Missing Numerical Values
-LotFrontage: Missing values were filled using the mean of the column.
+## 🧪 Train Set Cleaning Steps
 
-Alley: Dropped due to too many missing values (majority of entries were NaN).
+### 🔢 Numerical Features
 
-MasVnrType: Initially dropped due to nearly 50% missing values. 
-May revisit later for imputation using KNN or advanced modeling.
+| Feature         | Strategy            | Notes                                                                 |
+|----------------|---------------------|------------------------------------------------------------------------|
+| LotFrontage     | Mean Imputation      | Filled using the mean of the column.                                  |
+| MasVnrArea      | Mean Imputation      | Missing values replaced with the mean.                                |
+| GarageYrBlt     | Median Imputation    | Median used to reduce the effect of outliers.                         |
 
-MasVnrArea: Missing values were replaced with the mean.
+---
 
-BsmtQual: Filled missing entries with the mode (most frequent category).
+### 🗃️ Categorical Features
 
-BsmtCond: Filled missing entries with the mode.
+| Feature         | Strategy              | Notes                                                                 |
+|----------------|-----------------------|------------------------------------------------------------------------|
+| BsmtQual        | Mode Imputation        | Filled with the most frequent value.                                  |
+| BsmtCond        | Mode Imputation        | Same approach as above.                                               |
+| BsmtExposure    | Mode Imputation        | Ensured consistency with basement-related features.                   |
+| Electrical      | Filled with `"NA"`     | Explicitly labeled missing as "NA" to capture non-recorded status.    |
+| GarageType      | Filled with `"NA"`     | "NA" indicates no garage present, avoids misrepresentation.           |
+| GarageFinish    | Filled with `"NA"`     | Same logic as `GarageType`.                                           |
+| GarageQual      | Filled with `"NA"`     | Maintains logical consistency across garage features.                 |
+| GarageCond      | Filled with `"NA"`     | Same as above.                                                        |
 
-BsmtExposure: Filled missing entries with the mode.
+---
 
-### 🏷️ Categorical Values Handling
-Electrical: Missing values were filled with the string "NA" to 
-explicitly capture non-recorded cases. This allows the model to consider "NA" as a 
-distinct category instead of inferring a relationship that may not exist.
+### 🗑️ Dropped Features
 
-GarageType, GarageFinish, GarageQual, and GarageCond were also filled with "NA" to 
-account for homes with no garage, rather than imputing misleading values.
+| Feature         | Reason for Dropping                                                     |
+|----------------|--------------------------------------------------------------------------|
+| Alley           | Too many missing values; majority of entries were `NaN`.                |
+| MasVnrType      | Nearly 50% missing values; dropped for now, may revisit with modeling.  |
+| PoolQC          | Excessive missing values; minimal predictive power.                     |
+| Fence           | Same as above.                                                          |
+| MiscFeature     | Same as above.                                                          |
 
-## 🛠️ Other Considerations
-GarageYrBlt: A numerical year field. Missing values were filled with the median to avoid 
-skewing by outliers or extreme values.
+---
 
-PoolQC, Fence, and MiscFeature columns were dropped due to excessive missing values and 
-lack of predictive power.
+### 🛠️ Additional Considerations
 
-Categorical string imputation was preferred in many cases using "NA" or mode to help 
-the model capture the absence of a feature (e.g., no basement, no garage) rather than assuming a best guess.
+- For **categorical variables**, missing values were often filled using `"NA"` or the **mode**, based on context:
+  - Helps the model distinguish between *absence of a feature* (e.g., no garage) and *missing data*.
 
+- Dropped features were selected based on:
+  - High proportion of missing values
+  - Lack of clear relationship to the target (`SalePrice`)
+  - Minimal contribution to model interpretability

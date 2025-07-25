@@ -1,98 +1,137 @@
-Drop Column Alley 1369 missing values, missing values ernomous in comparison to dataset
+# 🧪 Feature Engineering & Data Cleaning Report
 
-Do same to: 
+---
 
-MasVnrType - 872 missing values
+## 🗑️ Columns Dropped Due to Excessive Missing Values
 
-FireplaceQu - 690 values
+The following features were dropped due to a **high proportion of missing values** compared to the dataset size:
 
-PoolQC — 1453 missing values
+| Feature       | Missing Values | Reason for Dropping                                 |
+|---------------|----------------|------------------------------------------------------|
+| `Alley`        | 1369            | Majority missing; presence not impactful            |
+| `MasVnrType`   | 872             | ~50% missing; can revisit with modeling later       |
+| `FireplaceQu`  | 690             | Categorical; not reliable with so many missing      |
+| `PoolQC`       | 1453            | Nearly all missing; no useful variance              |
+| `Fence`        | 1179            | Sparsely recorded; unlikely to add signal           |
+| `MiscFeature`  | 1406            | Mostly missing; inconsistent, low predictive power  |
 
-Fence — 1179 missing values
+---
 
-MiscFeature — 1406 missing values
+## 📈 Correlation Analysis
 
-1. Strongly Correlated Features (|r| ≥ 0.7)
-Feature 1	Feature 2	Correlation (r)	Insight
-GarageCars	GarageArea	0.88
-TotalBsmtSF	1stFlrSF	0.82
-GrLivArea	TotRmsAbvGrd 0.83
-YearBuilt	GarageYrBlt	0.83
-OverallQual	SalePrice	0.79
+### 🔗 Strongly Correlated Features (|r| ≥ 0.7)
 
-2. Moderate Correlations (0.5 ≤ |r| < 0.7)
-Feature 1	Feature 2	Correlation (r)	Insight
-FullBath	OverallQual	0.55
-YearRemodAdd	YearBuilt	0.59
+| Feature 1      | Feature 2      | Correlation (r) | Insight                                     |
+|----------------|----------------|------------------|---------------------------------------------|
+| `GarageCars`    | `GarageArea`   | 0.88             | Redundant; both measure garage size         |
+| `TotalBsmtSF`   | `1stFlrSF`     | 0.82             | Lower floor area overlaps with basement     |
+| `GrLivArea`     | `TotRmsAbvGrd` | 0.83             | More rooms generally indicate larger area   |
+| `YearBuilt`     | `GarageYrBlt`  | 0.83             | Garage year built aligns with house year    |
+| `OverallQual`   | `SalePrice`    | 0.79             | Strong positive relationship                 |
+
+### 🔗 Moderate Correlations (0.5 ≤ |r| < 0.7)
+
+| Feature 1       | Feature 2       | Correlation (r) | Insight                                      |
+|------------------|------------------|------------------|-----------------------------------------------|
+| `FullBath`        | `OverallQual`    | 0.55             | Bathrooms contribute to overall quality       |
+| `YearRemodAdd`    | `YearBuilt`      | 0.59             | Remodel year is usually close to build year   |
+
+---
+
+## 🔍 Multicollinearity Reduction Strategy
+
+To reduce **multicollinearity**, one feature from each highly correlated pair was dropped:
+
+| Drop Feature     | Keep Feature     | Reason                                   |
+|------------------|------------------|------------------------------------------|
+| `GarageArea`      | `GarageCars`     | Better captures usable garage capacity   |
+| `1stFlrSF`        | `TotalBsmtSF`    | Basement space overlaps ground floor     |
+| `TotRmsAbvGrd`    | `GrLivArea`      | `GrLivArea` is continuous and more robust|
+| `GarageYrBlt`     | `YearBuilt`      | Redundant year info                      |
+
+✅ Moderately correlated features were retained to preserve variance and context.
+
+---
+
+## 🧠 Feature Recommendations for Modeling (Categorical & Numerical)
+
+### ✅ Recommended Features to Keep
+
+- `OverallQual`
+- `GrLivArea`
+- `GarageCars`
+- `TotalBsmtSF`
+- `FullBath`
+- `YearBuilt`
+
+### ❌ Recommended Features to Drop
+
+- `GarageArea`
+- `1stFlrSF`
+- `TotRmsAbvGrd`
+- `GarageYrBlt`
+
+---
+
+## 🧩 Imputation Strategy for Categorical NaNs
+
+For features like:
+
+Alley, MasVnrType, BsmtQual, BsmtCond, BsmtExposure,
+BsmtFinType1, BsmtFinType2, FireplaceQu, GarageType,
+GarageFinish, GarageQual, GarageCond, PoolQC, Fence,
+MiscFeature
 
 
-Actionable Steps to Reduce Multicollinearity
-Drop one of each highly correlated pair:
+→ Missing values **represent actual absence** (e.g., no garage, no basement) and are best handled by **replacing with meaningful string categories** such as `"No Garage"`, `"No Basement"`.
 
-Remove GarageArea (keep GarageCars).
+This avoids misleading imputation and lets the model learn from absence directly.
 
-Remove 1stFlrSF (keep TotalBsmtSF).
+---
 
-Remove TotRmsAbvGrd (keep GrLivArea).
+## 📊 Final Feature Engineering Strategy (Numerical)
 
-Remove GarageYrBlt (keep YearBuilt).
+### ⚠️ Outliers Present In:
+- `LotArea`
+- `GrLivArea`
+- `SalePrice`
 
-Keep moderately correlated features if they add unique insights (e.g., FullBath vs. OverallQual).
+### 🚫 Avoid Dropping Outliers
+- Dropping them risks losing valuable patterns.
+- Instead, apply robust transformations.
 
-Verify with VIF (Variance Inflation Factor) if building linear models:\
+---
 
-Multicollinearity inflates model variance and misleads interpretation.
+### ✅ Recommended Transformations
 
-Solution: Simplify by keeping one feature from each correlated pair.
+#### 1. **RobustScaler for Numerical Features**
+- Uses **median and IQR**.
+- Resistant to outliers.
+- Suitable for models sensitive to feature scale.
 
-Feature Recommendations for Modeling(Categorical Valus):
-✅ Keep: OverallQual, GrLivArea, GarageCars, TotalBsmtSF, FullBath, YearBuilt
-❌ Drop: GarageArea, 1stFlrSF, TotRmsAbvGrd, GarageYrBlt
+#### 2. **Log Transform for Skewed Features**
+- Apply `np.log1p()` to:
+  - `SalePrice`
+  - `LotArea`
+  - `GrLivArea`
+- Helps normalize distributions and stabilize variance.
 
+#### 3. **Optional: Winsorization**
+- Cap extreme outliers at 1st and 99th percentiles.
+- Keeps rows, reduces outlier influence.
 
-Imputation Strategy for NaN values: For features like Alley, 
-MasVnrType, BsmtQual, BsmtCond, BsmtExposure, BsmtFinType1, 
-BsmtFinType2, FireplaceQu, GarageType, GarageFinish, GarageQual, 
-GarageCond, PoolQC, Fence, and MiscFeature, the "NaN" values represent 
-the absence of the feature, which is a meaningful category in itself. 
-These should likely be treated as a distinct category 
-(e.g., "No Alley", "No Basement") rather than standard imputation.
+#### 4. **One-Hot Encoding for Categorical Features**
+- Ensures categorical variables are model-friendly.
+- Allows capturing category-level variance.
 
-🧠 Final Feature Engineering Recommendation(Numerical Valuse)
-Given the presence of numerous outliers in critical numerical features such as LotArea, 
-GrLivArea, and SalePrice, dropping these values would lead to significant data loss and 
-potentially distort the underlying distribution of the dataset. Therefore, instead of 
-eliminating outliers, we propose a robust transformation strategy that maintains data 
-integrity while minimizing the negative impact of extreme values.
+---
 
-Use of RobustScaler for Numerical Features
-We recommend applying RobustScaler to all numerical columns during preprocessing. 
-Unlike StandardScaler, which uses mean and standard deviation, RobustScaler scales 
-data based on the median and interquartile range (IQR), making it highly resistant to outliers. 
-This ensures that the overall scale of the features is normalized without allowing extreme values 
-to skew the distribution.
+## 📌 Most Correlated Numerical Features (for selection or reduction)
 
-Logarithmic Transformation for Highly Skewed Variables
-For variables with heavy right-skew, such as SalePrice, LotArea, and GrLivArea, 
-we propose using a log transformation (e.g., np.log1p) to compress the range of large values. 
-This technique reduces skewness, improves model performance, and helps treat extreme values 
-without removing them.
-
-Preservation of Data through Winsorization (Optional)
-In cases where numeric values are severely anomalous but still potentially informative, 
-Winsorization may be applied. This technique caps values at specified percentiles 
-(e.g., 1st and 99th), retaining the row while limiting the influence of outliers.
-
-Categorical Encoding with One-Hot Encoding
-One-hot encoding will be applied to all nominal categorical variables. 
-While this method does not address outliers directly, it ensures categorical features 
-are properly formatted for machine learning algorithms.
-
-Avoid Dropping Outliers to Maintain Dataset Size
-Because of the distribution density and potential importance of rare values, 
-dropping rows with outliers is not recommended. Our focus remains on retaining as much 
-information as possible while dampening the influence of anomalies through scaling and transformation.
-
-Most correlated numerical features list:
-['LotFrontage', 'OverallQual', 'YearBuilt', 'YearRemodAdd', 'MasVnrArea', 'BsmtFinSF1', 'TotalBsmtSF', '1stFlrSF', '2ndFlrSF', 'GrLivArea', 'FullBath', 'TotRmsAbvGrd', 'Fireplaces', 'GarageYrBlt', 'GarageCars', 'GarageArea', 
-'WoodDeckSF', 'OpenPorchSF']
+```python
+[
+ 'LotFrontage', 'OverallQual', 'YearBuilt', 'YearRemodAdd', 'MasVnrArea',
+ 'BsmtFinSF1', 'TotalBsmtSF', '1stFlrSF', '2ndFlrSF', 'GrLivArea',
+ 'FullBath', 'TotRmsAbvGrd', 'Fireplaces', 'GarageYrBlt', 'GarageCars',
+ 'GarageArea', 'WoodDeckSF', 'OpenPorchSF'
+]
